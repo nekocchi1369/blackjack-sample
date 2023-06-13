@@ -1,0 +1,152 @@
+import random
+
+def StepUp4():
+  #乱数を入れる変数r,lの初期化
+  r = 0  
+  l = 0
+  #ディーラーのカードをひくかどうか考えるハラハラ具合
+  tension = 0
+  #合計を入れる変数sum1,sum2の初期化
+  sum1 = 0
+  sum2 = 0 
+  #繰り返し処理を何回行ったか記録するための変数cnt1,cnt2の初期化
+  cnt1 = 0
+  cnt2 = 0
+  #繰り返し処理を始めるために変数judge1,judge2に代入
+  judge1 = "Y"
+  judge2 = "Y"
+  #1が出た際に1か11を選んだ場合に繰り返し処理から抜ける判定するための変数decisionの初期化
+  decision = 0
+  #judge＝1の間、繰り返し処理を続ける
+  print("---ゲームスタート---")
+  for i in range(2):
+    r = random.randint(1,13)
+    l = random.randint(1,10)
+    sum1 += r
+    sum2 += l
+    cnt1 += 1
+    cnt2 += 1
+    print("プレイヤーが引いたカードは" + str(r) + "です。")
+    print("ディーラーが引いたカードは" + str(l) + "です。")
+  print("プレイヤーの合計は" + str(sum1) + "です。")
+  print("ディーラーの合計は" + str(sum2) + "です。")
+  while judge1 != "N" or judge2 != "N":
+      if sum1 < 21 and judge1 == "Y":
+        judge1 = str(input("Y:カードを引く,N:引くのをやめる"))
+        if judge1 == "Y":
+          #乱数を求めて変数rに代入
+          r = random.randint(1,13)
+          #1が出た場合に1か11のどちらかを選ぶ繰り返し処理
+          if r == 1:
+            while decision == 0:
+              r = int(input("1が出ましたので1か11のどちらかを選んでください"))
+              if r == 1 or r == 11:
+                #引いたカードの合計を変数sumに足していく
+                sum1 += r
+                cnt1 += 1
+                #1か11のどちらかを選ばなければならない繰り返しから抜け出すために1を代入
+                decision = 1
+                print("プレイヤーの合計は" + str(cnt1) + "回目:合計" + str(sum1))
+          #11以上の絵札が出た場合は10としてカウントする
+          elif r >= 11:
+            r = 10
+            #引いたカードの合計を変数sumに足していく
+            sum1 += r
+            cnt1 += 1
+            print("プレイヤーの合計は" + str(cnt1) + "回目:合計" + str(sum1))
+          #それ以外のカードが出た場合の処理
+          else:
+            #引いたカードの合計を変数sumに足していく
+            sum1 += r
+            cnt1 += 1
+            print("プレイヤーの合計は" + str(cnt1) + "回目:合計" + str(sum1))
+        elif sum1 == 21:
+          judge1 = "N"
+          print("ブラックジャック")
+        else:
+          judge1 = "N"
+          print("--終了--")
+      else:
+        sum1 = 0
+        judge1 = "N"
+        judge2 = "O"
+        print("--ゲームオーバ--")
+      #ディーラーのターン Yは通常モード　Nはこれ以上繰り返しを進めたくない時　Oは一旦辞めたい時
+      while judge2 == "Y" or judge2 == "O" and sum2 < 21:
+        if sum2 < 21:
+          l = random.randint(1,10)
+          tension = random.randint(1,10)
+          #9以下の時は必ずカードを引く
+          if sum2 < 10:
+            sum2 += l
+            cnt2 += 1
+            judge2 = "O"
+          #12以下の時はtensionが3以上ならばカードを引く
+          elif sum2 <= 13:
+            if tension >= 3:
+              sum2 += l
+              cnt2 += 1
+              judge2 = "O"
+            else:
+              judge2 = "N"
+          #15以下の時はtensionが5以上ならばカードを引く
+          elif sum2 <= 16:
+            if tension >= 5:
+              sum2 += l
+              cnt2 += 1
+              judge2 = "O"
+            else:
+              judge2 = "N"
+          #17以下の時はtensionが7以上ならばカードを引く
+          elif sum2 <= 18:
+            if tension >= 7:
+              sum2 += l
+              cnt2 += 1
+              judge2 = "O"
+            else:
+              judge2 = "N"
+          #19以下の時はtensionが10ならばカードを引く
+          elif sum2 <= 20:
+            if tension == 10:
+              sum2 += l
+              cnt2 += 1
+              judge2 = "O"
+            else:
+              judge2 = "N"
+          if sum2 == 21:
+            judge2 = "N"
+            print("ブラックジャック")
+          else:
+            judge2 = "A"
+        elif sum2 == 21:
+          judge2 = "O"
+          print("ブラックジャック")
+        else:
+          judge2 = "N"
+          print("ディーラーの合計は" + str(cnt2) + "回目:合計" + str(sum2))
+      if sum2 > 21:
+        judge2 = "A"
+      else:
+        print("ディーラーの合計は" + str(cnt2) + "回目:合計" + str(sum2))
+
+  if judge2 == "A":
+    print("あなたの勝ちです！")
+    print("プレイヤーの合計は" + str(cnt1) + "回目:合計" + str(sum1))
+    print("ディーラーの合計は" + str(cnt2) + "回目:合計" + str(sum2))
+    print("ディーラー「次は負けません」")
+  elif  sum1 > sum2 :
+    print("あなたの勝ちです！")
+    print("プレイヤーの合計は" + str(cnt1) + "回目:合計" + str(sum1))
+    print("ディーラーの合計は" + str(cnt2) + "回目:合計" + str(sum2))
+    print("ディーラー「次は負けません」")
+  elif sum1 < sum2:
+    print("あなたの負けです。")
+    print("プレイヤーの合計は" + str(cnt1) + "回目:合計" + str(sum1))
+    print("ディーラーの合計は" + str(cnt2) + "回目:合計" + str(sum2))
+    print("ディーラー「また来なさいワハハ」")
+  else:
+    print("引き分けです。")
+    print("次こそはあなたを倒します")
+
+
+StepUp4()
